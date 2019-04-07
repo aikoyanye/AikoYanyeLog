@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="AikoYanye,Log,学习,博客,小站" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <link href="static\resource\bootstrap\css\bootstrap.css" rel="stylesheet">
+    <script src="static\resource\bootstrap\js\bootstrap.js"></script>
+    <script src="static\resource\wangeditor\wangEditor.min.js"></script>
+    <script src="static\resource\js\main.js"></script>
+    <script src="static\resource\js\title.js"></script>
+    <script src="static\resource\js\content.js"></script>
+    <style type="text/css">
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+        .text {
+            border: 1px solid #ccc;
+            height: 720px;
+        }
+    </style>
+    <title>KirisameMarisa</title>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="background-color: #FFF5EE;margin-top:15px;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" onclick="window.location.reload();"><img alt="LOGO" src=""></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#main" role="tab" data-toggle="tab">首页</a></li>
+                    <li><a href="#title_tab" role="tab" data-toggle="tab" onclick="InitTitleTab({{ userId }})">分类</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#add_title">添加分类</a></li>
+                    <li><a href="#add_content_tab" role="tab" data-toggle="tab" onclick="InitAddContentTab({{ userId }})">添加文章</a></li>
+                </ul>
+                <form class="navbar-form navbar-left" id="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ user[1] }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" onclick="CancelLogin()">注销</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#info">修改信息</a></li>
+                            <li><a href="#">pan</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li><a href="#" data-toggle="modal" data-target="#register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                    {% end %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="alert alert-warning">
+        <a href="#" class="close" data-dismiss="alert">
+            &times;
+        </a>
+        <strong>不知道有没有人能看到，如果看到了，请你不要对这个垃圾网站乱来。</strong>
+    </div>
+    <div id="myTabContent" class="tab-content" style="margin-top:10px;">
+        <div class="tab-pane fade in active" id="main">
+            {% if current %}
+            <div id="jumbotron" class="jumbotron jumbotron-fluid" style="margin-top: 30px;background-color: #FFF5EE;">
+                <div class="container">
+                    <h1 class="display-4">你好啊，{{ user[1] }}</h1>
+                    <p class="lead">现在你不仅能随便看看，还能随便写写</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="jumbotron jumbotron-fluid" style="margin-top: 30px;background-color: #FFF5EE;">
+                <div class="container">
+                    <h1 class="display-4">你还没登录啊</h1>
+                    <p class="lead">所以你只能随便看看</p>
+                </div>
+            </div>
+            {% end %}
+        </div>
+        <div class="tab-pane fade" id="title_tab"></div>
+        {% if current %}<div class="tab-pane fade" id="add_content_tab">{% block add_content %}{% end %}</div>{% end %}
+        <div class="tab-pane fade" id="content_list_tab"></div>
+        <div class="tab-pane fade" id="content">{% block content %}{% end %}</div>
+    </div>
+    {% if current %}
+    {% block user_info %}{% end %}
+    {% block add_title %}{% end %}
+    {% block edit_title %}{% end %}
+    {% end %}
+    {% block register %}{% end %}
+    {% block login %}{% end %}
+    {% block alert %}{% end %}
+</div>
+</body>
+</html>

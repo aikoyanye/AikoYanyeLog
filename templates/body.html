@@ -1,0 +1,213 @@
+{% extends "header.html" %}
+
+{% block login %}
+<div class="modal fade" id="login" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">登录</div>
+            <div class="modal-body">
+                <label for="login_email">电子邮箱</label>
+                <input class="form-control" type="text" id="login_email" name="login_email" required>
+                <label for="login_password">用户密码</label>
+                <input class="form-control" type="password" id="login_password" name="login_password" required>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="Login()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block register %}
+<div class="modal fade" id="register" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/" method="post">
+                <div class="modal-header">注册</div>
+                <div class="modal-body">
+                    <label for="register_email">电子邮箱</label>
+                    <input class="form-control" type="text" id="register_email" name="register_email" required>
+                    <label for="register_username">用户昵称</label>
+                    <input class="form-control" type="text" id="register_username" name="register_username" required>
+                    <label for="register_password">用户密码</label>
+                    <input class="form-control" type="password" id="register_password" name="register_password" required>
+                    <label for="register_repassword">确认密码</label>
+                    <input class="form-control" type="password" id="register_repassword" name="register_repassword" oninput="IsPasswordCheck()" required>
+                    <input type="hidden" value="register" name="hidden">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" id="register_btnsub" disabled>提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block user_info %}
+<div class="modal fade" id="info" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/" method="post">
+                <div class="modal-header">修改用户信息</div>
+                <div class="modal-body">
+                    <label for="info_email">电子邮箱</label>
+                    <input class="form-control" type="text" name="info_email" id="info_email" value="{{ user[0] }}" required>
+                    <label for="info_username">用户昵称</label>
+                    <input class="form-control" type="text" name="info_username" id="info_username" value="{{ user[1] }}" required>
+                    <label for="info_password">旧密码</label>
+                    <input class="form-control" type="password" name="info_oldpassword" id="info_oldpassword" required>
+                    <label for="info_password">新密码</label>
+                    <input class="form-control" type="password" name="info_password" id="info_password" required>
+                    <label for="info_repassword">确认密码</label>
+                    <input class="form-control" type="password" name="info_repassword" id="info_repassword" oninput="IsInfoPasswordCheck()" required>
+                    <input type="hidden" value="info" name="hidden">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" id="info_btnsub" disabled>修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block add_title %}
+<div class="modal fade" id="add_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">添加分类</div>
+            <div class="modal-body">
+                <label for="add_title_name">分类名</label>
+                <input class="form-control" type="text" id="add_title_name">
+                <label for="add_title_hidden">是否设为隐藏分类</label>
+                <select id="add_title_hidden" class="form-control">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="AddTitle({{ userId }})">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block edit_title %}
+<div class="modal fade" id="edit_title" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">编辑分类</div>
+            <div class="modal-body">
+                <label for="edit_title_name">分类名</label>
+                <input class="form-control" type="text" id="edit_title_name">
+                <label for="edit_title_hidden">是否设为隐藏分类</label>
+                <select id="edit_title_hidden" class="form-control">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </div>
+            <div class="modal-footer" id="edit_title_footer"></div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block alert %}
+<div class="modal fade" id="fail_alert" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #F8D7DA;">
+            <div class="modal-body">
+                <strong>提示 </strong>操作是无效的
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="success_alert" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #D4EDDA;">
+            <div class="modal-body">
+                <strong>提示 </strong>操作是有效的
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="msg_alert" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #FCF8E3;">
+            <div class="modal-header" id="msg_header"></div>
+            <div class="modal-body" id="msg_body"></div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block add_content %}
+<label for="add_content_head">文章标题</label>
+<input type="text" id="add_content_head" class="form-control">
+<div style="margin-top: 10px;">
+    <table width="100%">
+        <tr>
+            <td width="10%">
+                <label for="add_content_title">文章所属类型</label>
+                <select style="width: 200px;" id="add_content_title" class="form-control"></select>
+            </td>
+            <td width="15%">
+                <label for="add_content_hidden">是否设为私密文章</label>
+                <select style="width: 120px;margin-left: 5px" id="add_content_hidden" class="form-control">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </td>
+            <td width="5%">
+                <button type="button" class="btn btn-default" onclick="UploadPic('{{ user[1] }}')" style="margin-left: 5px;">上传图片</button>
+            </td>
+            <td width="65%">
+                <input type="file" accept="image/*" id="add_content_pic" style="margin-left: 5px;">
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" onclick="AddContent({{ userId }})">提交</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="rich_editor_toolbar" class="toolbar" style="margin-top: 10px;"></div>
+<div id="rich_editor_text" class="text" style="margin-top: 10px;"></div>
+{% end %}
+{% block content %}
+<a href="#content_list_tab" role="tab" data-toggle="tab" id="goto_tab_content_list"></a>
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color: #FFE4E1;">
+        <div id="content_head"></div>
+    </div>
+    <div class="panel-body" style="background-color: #FFF5EE;">
+        <div style="margin-top: 10px;">
+            <table width="100%">
+                <tr>
+                    <td id="content_title"></td>
+                    <td id="content_created" style="margin-left: 5px;"></td>
+                    <td id="content_pic_sub" style="margin-left: 5px;"></td>
+                    <td id="content_pic" style="margin-left: 5px;"></td>
+                    <td><button type="button" class="btn btn-warning"
+                                onclick="document.getElementById('goto_tab_content_list').click();">返回文章列表</button>
+                    </td>
+                    <td id="content_edit" style="margin-left: 5px;"></td>
+                    <td id="content_submit" style="margin-left: 5px;"></td>
+                    <td id="content_delete" style="margin-left: 5px;"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="rerich_editor_toolbar" class="toolbar" style="margin-top: 10px;"></div>
+    <div id="rerich_editor_text" class="text" style="margin-top: 10px;"></div>
+    <div class="modal fade" id="content_delete_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">警告</div>
+                <div class="modal-body">你确定要删除此文章吗？</div>
+                <div class="modal-footer" id="content_delete_footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
