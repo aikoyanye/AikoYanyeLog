@@ -1,15 +1,17 @@
 import tornado.web, tornado.ioloop, tornado.locks, sqlite3, os
-from handler.MainHandler import Mainhandler
+from handler.MainHandler import MainHandler
 from handler.TitleHandler import TitleHandler
 from handler.ContentHandler import ContentHandler
+from handler.CommentHandler import CommentHandler
 
 class Application(tornado.web.Application):
     def __init__(self, db):
         self.db = db
         handlers = [
-            tornado.web.url(r'/', Mainhandler, name='main'),
+            tornado.web.url(r'/', MainHandler, name='main'),
             tornado.web.url(r'/title', TitleHandler, name='title'),
             tornado.web.url(r'/content', ContentHandler, name='content'),
+            tornado.web.url(r'/comment', CommentHandler, name='comment'),
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), 'templates'),

@@ -198,8 +198,16 @@
             </table>
         </div>
     </div>
-    <div id="rerich_editor_toolbar" class="toolbar" style="margin-top: 10px;"></div>
-    <div id="rerich_editor_text" class="text" style="margin-top: 10px;"></div>
+    <div id="rerich_editor_toolbar" class="toolbar" style="margin-top: 5px;"></div>
+    <div id="rerich_editor_text" class="text" style="margin-top: 5px;"></div>
+    <div style="margin-top: 10px;">
+        <label for="comment_email">电子邮箱</label>
+        <input class="form-control" type="text" id="comment_email" value="{{ user[0] }}">
+        <label for="comment_content">内容</label>
+        <textarea class="form-control" id="comment_content"></textarea>
+        <div id="comment_btnsub"></div>
+    </div>
+    <div style="margin-top: 10px;" id="comment"></div>
     <div class="modal fade" id="content_delete_modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

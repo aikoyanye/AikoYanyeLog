@@ -1,7 +1,7 @@
-import tornado.web, json
+import tornado.web, json, os
 from tool.main_tool import MainTool
 
-class Mainhandler(tornado.web.RequestHandler):
+class MainHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         # 如果cookie有用户数据，免登录
         email = self.get_cookie('email', '')
@@ -13,7 +13,7 @@ class Mainhandler(tornado.web.RequestHandler):
             self.set_cookie('email', '')
             self.set_cookie('username', '')
             self.set_cookie('userId', '')
-            self.render('body.html', current=False, userId=0)
+            self.render('body.html', current=False, userId=0, user=(email, username))
 
     async def post(self, *args, **kwargs):
         if self.get_argument('hidden') == 'info':
@@ -33,6 +33,8 @@ class Mainhandler(tornado.web.RequestHandler):
                 self.set_cookie('email', result[0])
                 self.set_cookie('username', result[1])
                 self.set_cookie('userId', str(result[2]))
+                if os.path.exists('static/pan/' + self.get_argument('register_username')) != True:
+                    os.mkdir('static/pan/' + self.get_argument('register_username'))
                 self.redirect('/')
             else:
                 self.write('<script>alert("注册失败，注意字段")</script>')

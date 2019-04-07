@@ -109,7 +109,6 @@ function AddContent(userId){
 
 // 初始化content list tab
 function InitContentListTab(titleId, userId){
-    alert(titleId);
     $.ajax({
         url: "/content",
         type: "get",
@@ -142,7 +141,10 @@ function InitContentTab(contentId, titleId, userId){
         type: "get",
         data: {type: '2', contentId: contentId},
         success: function(arg){
+            Comment(contentId, userId);
             var data = jQuery.parseJSON(arg);
+            document.getElementById('comment_btnsub').innerHTML = '<button type="button" class="btn btn-primary" \
+                        style="margin-top: 10px;width: 100%;" onclick="AddComment('+contentId+', '+userId+')">评论</button>';
             document.getElementById('content_head').innerHTML = '<h3>'+data[0]+'</h3>';
             document.getElementById('content_title').innerHTML = '<h4>分类：'+data[3]+'</h4>';
             document.getElementById('content_created').innerHTML = '<h4>最后编辑时间：'+data[2]+'</h4>';

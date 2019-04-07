@@ -11,6 +11,7 @@ function AddTitle(userId){
         data: {title: title, hidden: document.getElementById('add_title_hidden').value, userId: userId},
         success: function(arg){
             ShowSeccussAlert();
+            InitTitleTab(userId);
         }
     })
 }
