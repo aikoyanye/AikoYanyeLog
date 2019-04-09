@@ -219,3 +219,55 @@
     </div>
 </div>
 {% end %}
+{% block pan %}
+<div>
+    <table width="100%">
+        <tr>
+            <td width="33%">
+                <button type="button" class="btn btn-warming" data-toggle="modal" data-target="#add_folder_modal"
+                                            style="width: 95%">新建文件夹</button></td>
+            <td width="33%">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload_file"
+                        style="width: 95%">上传</button></td>
+            <td width="33%">
+                <button type="button" class="btn btn-danger" style="width: 95%">删除</button></td>
+        </tr>
+    </table>
+    <input type="hidden" id="path">
+</div>
+<div class="panel panel-default" style="margin-top: 15px;">
+    <div class="panel-body" style="background-color: #FFF5EE;">
+        <table id="pan_table"></table>
+    </div>
+</div>
+<div class="modal fade" id="add_folder_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">添加文件夹</div>
+            <div class="modal-body">
+                <label for="folder_name">文件夹名字</label>
+                <input type="text" id="folder_name" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="AddFolder()"
+                        style="width: 100%" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="upload_file" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">上传文件</div>
+            <div class="modal-body" id="upload_file_body">
+                <label for="folder_name">文件夹名字</label>
+                <input type="file" id="file">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="AddFile()"
+                                                    style="width: 100%">上传</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

@@ -13,6 +13,7 @@
     <script src="static\resource\js\title.js"></script>
     <script src="static\resource\js\content.js"></script>
     <script src="static\resource\js\comment.js"></script>
+    <script src="static\resource\js\pan.js"></script>
     <style type="text/css">
         .toolbar {
             border: 1px solid #ccc;
@@ -54,7 +55,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#" onclick="CancelLogin()">注销</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#info">修改信息</a></li>
-                            <li><a href="#">pan</a></li>
+                            <li><a href="#pan" role="tab" data-toggle="tab" onclick="InitPanTab('{{ user[1] }}')">pan</a></li>
                         </ul>
                     </li>
                     {% else %}
@@ -93,6 +94,7 @@
         {% if current %}<div class="tab-pane fade" id="add_content_tab">{% block add_content %}{% end %}</div>{% end %}
         <div class="tab-pane fade" id="content_list_tab"></div>
         <div class="tab-pane fade" id="content">{% block content %}{% end %}</div>
+        {% if current %}<div class="tab-pane fade" id="pan">{% block pan %}{% end %}</div>{% end %}
     </div>
     {% if current %}
     {% block user_info %}{% end %}
