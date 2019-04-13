@@ -46,7 +46,8 @@ function ShowComment(data, userId){
         div.innerHTML = div.innerHTML + '<div class="panel panel-default">\
         <div class="panel-heading" style="background-color: #FFE4E1;">'+data[i][1]+'\
         </div><div class="panel-body" style="background-color: #FFF5EE;">\
-        <table width="100%"><tr><td>'+data[i][0]+'</td><td>'+data[i][2]+'</td><td>'+de+'</td></tr></table></div></div>';
+        <table width="100%"><tr><td width="45%">联系邮箱：'+data[i][0]+'</td><td width="50%">评论时间：'+data[i][2]+'</td>\
+        <td>'+de+'</td></tr></table></div></div>';
     }
 }
 

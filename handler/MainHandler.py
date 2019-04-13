@@ -4,24 +4,18 @@ from tool.main_tool import MainTool
 class MainHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         # 如果cookie有用户数据，免登录
-        email = self.get_cookie('email', '')
-        username = self.get_cookie('username', '')
-        userId = self.get_cookie('userId', '')
-        if email != '' and username != '':
-            self.render('body.html', current=True, user=(email, username), userId=userId)
+        result = MainTool.user_by(self.application.db, self.get_cookie('id', '0'))
+        if result:
+            self.render('body.html', current=True, user=(result[0], result[1]), userId=result[2], type=result[3])
         else:
-            self.set_cookie('email', '')
-            self.set_cookie('username', '')
-            self.set_cookie('userId', '')
-            self.render('body.html', current=False, userId=0, user=(email, username))
+            self.set_cookie('id', '0')
+            self.render('body.html', current=False, userId=0, user=('', ''), type='')
 
     async def post(self, *args, **kwargs):
         if self.get_argument('hidden') == 'info':
             if MainTool.change_info(self.application.db, self.get_argument('info_email'), self.get_argument('info_username'),
                                     self.get_argument('info_oldpassword'), self.get_argument('info_password')):
                 # 修改用户信息成功
-                self.set_cookie('email', self.get_argument('info_email'))
-                self.set_cookie('username', self.get_argument('info_username'))
                 self.redirect('/')
             else:
                 self.write('<script>alert("修改失败，注意字段")</script>')
@@ -30,9 +24,7 @@ class MainHandler(tornado.web.RequestHandler):
                                  self.get_argument('register_password'))
             if result:
                 # 注册成功，将信息写入cookie
-                self.set_cookie('email', result[0])
-                self.set_cookie('username', result[1])
-                self.set_cookie('userId', str(result[2]))
+                self.set_cookie('id', str(result[0]))
                 if os.path.exists('static/pan/' + self.get_argument('register_username')) != True:
                     os.mkdir('static/pan/' + self.get_argument('register_username'))
                 self.redirect('/')
@@ -42,18 +34,26 @@ class MainHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         # 注销
-        self.set_cookie('email', '')
-        self.set_cookie('username', '')
-        self.set_cookie('userId', '')
+        self.set_cookie('id', '0')
 
     async def put(self, *args, **kwargs):
         if self.get_argument('hidden') == 'login':
             result = MainTool.login(self.application.db, self.get_argument('login_email'), self.get_argument('login_password'))
             if result:
                 # 登录
-                self.set_cookie('email', result[0])
-                self.set_cookie('username', result[1])
-                self.set_cookie('userId', str(result[2]))
+                self.set_cookie('id', str(result[0]))
                 self.write('0')
             else:
                 self.write(json.dumps(['1']))
+
+
+class UpdateHandler(tornado.web.RequestHandler):
+    async def get(self, *args, **kwargs):
+        self.write(json.dumps(MainTool.update_list(self.application.db)))
+
+    async def post(self, *args, **kwargs):
+        MainTool.post_update(self.application.db, self.get_argument('version'), self.get_argument('content'))
+
+    async def put(self, *args, **kwargs):
+        # 替换全局背景
+        MainTool.bg_pic(self.request.files.get('bg')[0]['body'])

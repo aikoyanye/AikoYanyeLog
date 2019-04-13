@@ -1,4 +1,4 @@
-import datetime, hashlib
+import datetime, hashlib, os, shutil
 
 class SomeTool:
     @staticmethod

@@ -72,6 +72,7 @@ function DeleteTitle(titleId, userId){
         data: {titleId: titleId},
         success: function(arg){
             InitTitleTab(userId);
+            ShowSeccussAlert();
         },error: function(arg){
             ShowFailAlert();
         }
@@ -91,6 +92,7 @@ function EditTitle(titleId, userId){
         data: {titleId: titleId, title: title, hidden: document.getElementById('edit_title_hidden').value},
         success: function(arg){
             InitTitleTab(userId);
+            ShowSeccussAlert();
         },error: function(arg){
             ShowFailAlert();
         }

@@ -5,6 +5,8 @@ window.onload=function (){
     editor.create();
     editor1 = new E('#rerich_editor_toolbar', '#rerich_editor_text');
     editor1.create();
+    // 更新首页更新列表
+    InitUpdateList();
 }
 
 // 初始化添加content tab页
@@ -143,8 +145,8 @@ function InitContentTab(contentId, titleId, userId){
         success: function(arg){
             Comment(contentId, userId);
             var data = jQuery.parseJSON(arg);
-            document.getElementById('comment_btnsub').innerHTML = '<button type="button" class="btn btn-primary" \
-                        style="margin-top: 10px;width: 100%;" onclick="AddComment('+contentId+', '+userId+')">评论</button>';
+            document.getElementById('comment_btnsub').innerHTML = '<button type="button" class="btn btn-primary \
+            glyphicon glyphicon-send" style="margin-top: 10px;width: 100%;" onclick="AddComment('+contentId+', '+userId+')"></button>';
             document.getElementById('content_head').innerHTML = '<h3>'+data[0]+'</h3>';
             document.getElementById('content_title').innerHTML = '<h4>分类：'+data[3]+'</h4>';
             document.getElementById('content_created').innerHTML = '<h4>最后编辑时间：'+data[2]+'</h4>';
@@ -212,6 +214,7 @@ function SubmitEditContent(contentId){
             document.getElementById('content_title').innerHTML = data[0];
             document.getElementById('content_created').innerHTML = data[1];
             document.getElementById('content_btn_sub').setAttribute('disabled', true);
+            ShowSeccussAlert();
         },error: function(arg){
             ShowFailAlert();
         }

@@ -11,3 +11,6 @@ class PanHandler(tornado.web.RequestHandler):
     async def post(self, *args, **kwargs):
         PanTool.add_file(self.request.files.get('file')[0]['body'], self.get_argument('filename'),
                          self.get_argument('current'))
+
+    async def delete(self, *args, **kwargs):
+        PanTool.delete_files(self.get_arguments('item[]'), self.get_argument('current'))

@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from tool.some_tool import SomeTool
 
 class PanTool:
@@ -32,6 +32,20 @@ class PanTool:
     @staticmethod
     def add_file(file, filename, current):
         # 上传文件
+        filename = filename.replace(' ', '_')
+        filename = filename.replace(';', '_')
+        filename = filename.replace('\xa0', '_')
         abspath = os.getcwd() + '\\' + current + '\\' + str(filename).split('\\')[-1]
         with open(abspath, 'wb', ) as f:
             f.write(file)
+
+    @staticmethod
+    def delete_files(files, current):
+        # 删除文件
+        abspath = str(os.getcwd() + '/').replace('\\', '/')
+        for file in files:
+            if file != '':
+                if os.path.isfile(abspath + file):
+                    os.remove(str(abspath + file))
+                else:
+                    shutil.rmtree(str(abspath + file))

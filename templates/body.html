@@ -1,5 +1,44 @@
 {% extends "header.html" %}
 
+{% block update_list %}
+<div id="update_list" style="margin-top:10px;"></div>
+{% end %}
+{% block update_modal %}
+<div class="modal fade" id="update_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">更新记录</div>
+            <div class="modal-body">
+                <label for="version">版本</label>
+                <input class="form-control" type="text" id="version" required>
+                <label for="update_content">内容</label>
+                <textarea class="form-control" id="update_content"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-send"
+                        data-dismiss="modal" onclick="Update()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="bg_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">更换背景图片</div>
+            <div class="modal-body">
+                <h3>建议图片是16：9比例，否则拉伸之后不好看</h3>
+                <input type="file" id="bg_file" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-send"
+                        data-dismiss="modal" onclick="Bg()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
 {% block login %}
 <div class="modal fade" id="login" aria-hidden="true">
     <div class="modal-dialog">
@@ -13,7 +52,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="Login()">提交</button>
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-send"
+                        data-dismiss="modal" onclick="Login()"></button>
             </div>
         </div>
     </div>
@@ -38,7 +78,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary" id="register_btnsub" disabled>提交</button>
+                    <button type="submit" class="btn btn-primary glyphicon glyphicon-send" id="register_btnsub" disabled></button>
                 </div>
             </form>
         </div>
@@ -66,7 +106,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="submit" class="btn btn-primary" id="info_btnsub" disabled>修改</button>
+                    <button type="submit" class="btn btn-primary glyphicon glyphicon-send" id="info_btnsub" disabled></button>
                 </div>
             </form>
         </div>
@@ -89,7 +129,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="AddTitle({{ userId }})">提交</button>
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-send" data-dismiss="modal"
+                        onclick="AddTitle({{ userId }})"></button>
             </div>
         </div>
     </div>
@@ -145,8 +186,8 @@
 {% block add_content %}
 <label for="add_content_head">文章标题</label>
 <input type="text" id="add_content_head" class="form-control">
-<div style="margin-top: 10px;">
-    <table width="100%">
+<div style="margin-top: 10px;background-color: #FFF5EE;padding: 10px;">
+    <table width="100%" style="">
         <tr>
             <td width="10%">
                 <label for="add_content_title">文章所属类型</label>
@@ -166,7 +207,7 @@
                 <input type="file" accept="image/*" id="add_content_pic" style="margin-left: 5px;">
             </td>
             <td>
-                <button type="button" class="btn btn-primary" onclick="AddContent({{ userId }})">提交</button>
+                <button type="button" class="btn btn-primary glyphicon glyphicon-send" onclick="AddContent({{ userId }})"></button>
             </td>
         </tr>
     </table>
@@ -200,44 +241,42 @@
     </div>
     <div id="rerich_editor_toolbar" class="toolbar" style="margin-top: 5px;"></div>
     <div id="rerich_editor_text" class="text" style="margin-top: 5px;"></div>
-    <div style="margin-top: 10px;">
-        <label for="comment_email">电子邮箱</label>
-        <input class="form-control" type="text" id="comment_email" value="{{ user[0] }}">
-        <label for="comment_content">内容</label>
-        <textarea class="form-control" id="comment_content"></textarea>
-        <div id="comment_btnsub"></div>
-    </div>
-    <div style="margin-top: 10px;" id="comment"></div>
-    <div class="modal fade" id="content_delete_modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">警告</div>
-                <div class="modal-body">你确定要删除此文章吗？</div>
-                <div class="modal-footer" id="content_delete_footer"></div>
-            </div>
+</div>
+<div style="margin-top: 10px;background-color: #FFF5EE;">
+    <label for="comment_email">电子邮箱</label>
+    <input class="form-control" type="text" id="comment_email" value="{{ user[0] }}">
+    <label for="comment_content">内容</label>
+    <textarea class="form-control" id="comment_content"></textarea>
+    <div id="comment_btnsub"></div>
+</div>
+<div style="margin-top: 10px;background-color: #FFF5EE;" id="comment"></div>
+<div class="modal fade" id="content_delete_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">警告</div>
+            <div class="modal-body">你确定要删除此文章吗？</div>
+            <div class="modal-footer" id="content_delete_footer"></div>
         </div>
     </div>
 </div>
 {% end %}
 {% block pan %}
-<div>
-    <table width="100%">
-        <tr>
-            <td width="33%">
-                <button type="button" class="btn btn-warming" data-toggle="modal" data-target="#add_folder_modal"
-                                            style="width: 95%">新建文件夹</button></td>
-            <td width="33%">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload_file"
-                        style="width: 95%">上传</button></td>
-            <td width="33%">
-                <button type="button" class="btn btn-danger" style="width: 95%">删除</button></td>
-        </tr>
-    </table>
-    <input type="hidden" id="path">
-</div>
+<table width="100%">
+    <tr>
+        <td width="33%">
+            <button type="button" class="btn btn-warming" data-toggle="modal" data-target="#add_folder_modal"
+                    style="width: 95%">新建文件夹</button></td>
+        <td width="33%">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload_file"
+                    style="width: 95%">上传</button></td>
+        <td width="33%">
+            <button type="button" class="btn btn-danger" style="width: 95%" onclick="DeleteFiles()">删除</button></td>
+    </tr>
+</table>
+<input type="hidden" id="path">
 <div class="panel panel-default" style="margin-top: 15px;">
     <div class="panel-body" style="background-color: #FFF5EE;">
-        <table id="pan_table"></table>
+        <table id="pan_table" width="100%"></table>
     </div>
 </div>
 <div class="modal fade" id="add_folder_modal" aria-hidden="true">
@@ -249,8 +288,8 @@
                 <input type="text" id="folder_name" class="form-control">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="AddFolder()"
-                        style="width: 100%" data-dismiss="modal">提交</button>
+                <button type="button" class="btn btn-primary glyphicon glyphicon-send" onclick="AddFolder()"
+                        style="width: 100%" data-dismiss="modal"></button>
             </div>
         </div>
     </div>
@@ -258,16 +297,32 @@
 <div class="modal fade" id="upload_file" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">上传文件</div>
+            <div class="modal-header">文件仅允许上传160M以内，后续考虑1G（等我有钱升级服务器）</div>
             <div class="modal-body" id="upload_file_body">
-                <label for="folder_name">文件夹名字</label>
+                <label for="folder_name">文件名字</label>
                 <input type="file" id="file">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="AddFile()"
-                                                    style="width: 100%">上传</button>
+                <button type="button" class="btn btn-primary glyphicon glyphicon-send" onclick="AddFile()"
+                        style="width: 100%"></button>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var isCheckAll = false;
+    function CheckAll(){
+        if(isCheckAll){
+            $("input[type='checkbox']").each(function(){
+                this.checked = false;
+            });
+            isCheckAll = false;
+        }else{
+            $("input[type='checkbox']").each(function(){
+                this.checked = true;
+            });
+            isCheckAll = true;
+        }
+    }
+</script>
 {% end %}

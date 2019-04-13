@@ -1,4 +1,5 @@
 from tool.some_tool import SomeTool
+import os
 
 class MainTool:
     @staticmethod
@@ -20,7 +21,7 @@ class MainTool:
     def login(db, email, password):
         # 登录
         cursor = db.cursor()
-        sql = 'SELECT email, username, id FROM user WHERE email = "{}" AND password = "{}"' \
+        sql = 'SELECT id FROM user WHERE email = "{}" AND password = "{}"' \
               ''.format(email, SomeTool.key(password))
         cursor.execute(sql)
         result = cursor.fetchone()
@@ -45,3 +46,42 @@ class MainTool:
         except:
             db.rollback()
             return False
+
+    @staticmethod
+    def user_by(db, id):
+        cursor = db.cursor()
+        sql = 'SELECT email, username, id, type FROM user WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
+    @staticmethod
+    def update_list(db):
+        cursor = db.cursor()
+        sql = 'SELECT version, content, created FROM update_list ORDER BY id DESC'
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
+
+    @staticmethod
+    def post_update(db, version, content):
+        cursor = db.cursor()
+        sql = 'INSERT INTO update_list (version, content, created) VALUES ("{}", "{}", "{}")' \
+              ''.format(version, content, SomeTool.current_date())
+        cursor.execute(sql)
+        cursor.close()
+        try:
+            db.commit()
+            return True
+        except:
+            db.rollback()
+            return False
+
+    @staticmethod
+    def bg_pic(pic):
+        if os.path.exists('static/bg.png'):
+            os.remove('static/bg.png')
+        with open('static/bg.png', 'wb') as bg:
+            bg.write(pic)

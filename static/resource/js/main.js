@@ -67,3 +67,69 @@ function ShowMsgAlert(header, boby){
     document.getElementById('msg_body').innerHTML = boby;
     $('#msg_alert').modal('show');
 }
+
+// 添加更新记录
+function Update(){
+    var version = document.getElementById('version').value;
+    var content = document.getElementById('update_content').value;
+    if(version=='' || content==''){
+        ShowMsgAlert('警告', '输入框不能为空啊');
+        return
+    }
+    $.ajax({
+        url: "/update",
+        type: "post",
+        data: {version: version, content: content},
+        success: function(arg){
+            InitUpdateList();
+        }
+    })
+}
+
+// 更新列表更新
+function InitUpdateList(){
+    $.ajax({
+        url: "/update",
+        type: "get",
+        data: {},
+        success: function(arg){
+            ShowUpdateList(jQuery.parseJSON(arg));
+        }
+    })
+}
+
+// 展示更新列表
+function ShowUpdateList(data){
+    var div = version = document.getElementById('update_list');
+    div.innerHTML = '<div class="panel panel-default"><div class="panel-heading" style="background-color: #FFE4E1;">\
+                        <h3>更新内容</h3></div></div>';
+    for(var i = 0; i<data.length; i++){
+        div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-heading" style="background-color: #FFE4E1;">\
+                      <table width="100%"><tr><td width="80%"><h3>'+data[i][0]+'</h3></td><td>更新时间：'+data[i][2]+'</td></tr></table></div>\
+                      <div class="panel-body" style="background-color: #FFF5EE;">'+data[i][1]+'</div></div>';
+    }
+}
+
+// 更换背景图片
+function Bg(){
+    var bg = document.getElementById('bg_file');
+    if(bg.value == ''){
+        ShowMsgAlert('警告', '图片不能为空啊');
+        return
+    }
+    var d = new FormData();
+    d.append('bg', bg.files[0]);
+    $.ajax({
+        url: "/update",
+        type: "put",
+        data: d,
+        processData: false,
+        contentType: false,
+        async: false,
+        cache: false,
+        success: function(arg){
+            ShowSeccussAlert();
+            window.location.reload();
+        }
+    })
+}
