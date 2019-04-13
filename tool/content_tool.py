@@ -13,7 +13,9 @@ class ContentTool:
     def add_content(db, titleId, head, content, hidden):
         cursor = db.cursor()
         sql = 'INSERT INTO content (head, content, titleId, created, hidden) VALUES ' \
-              '(\'{}\', \'{}\', \'{}\', \'{}\', {})'.format(head, content, titleId, SomeTool.current_date(), hidden)
+              '(\'{}\', \'{}\', \'{}\', \'{}\', {})' \
+              ''.format(str(head).replace('\'', '"'), str(content).replace('\'', '"'), titleId, SomeTool.current_date(), hidden)
+        print(sql)
         cursor.execute(sql)
         cursor.close()
         try:
@@ -67,7 +69,7 @@ class ContentTool:
         cursor = db.cursor()
         created = SomeTool.current_date()
         sql = 'UPDATE content SET head = \'{}\', titleId = {}, content = \'{}\', hidden = {}, created = \'{}\' ' \
-              'WHERE id = {}'.format(head, titleId, content, hidden, created, contentId)
+              'WHERE id = {}'.format(str(head).replace('\'', '"'), titleId, str(content).replace('\'', '"'), hidden, created, contentId)
         cursor.execute(sql)
         try:
             db.commit()

@@ -5,8 +5,8 @@ class TitleTool:
     def add_title(db, title, hidden, userId):
         # 添加分类
         cursor = db.cursor()
-        sql = 'INSERT INTO title (title, userId, created, hidden) VALUES ("{}", {}, "{}", {})' \
-              ''.format(title, userId, SomeTool.current_date(), hidden)
+        sql = 'INSERT INTO title (title, userId, created, hidden) VALUES (\'{}\', {}, "{}", {})' \
+              ''.format(str(title).replace('\'', '"'), userId, SomeTool.current_date(), hidden)
         cursor.execute(sql)
         cursor.close()
         try:

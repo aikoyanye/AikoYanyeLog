@@ -6,7 +6,8 @@ class CommentTool:
         # 获取评论列表
         cursor = db.cursor()
         sql = 'SELECT cm.email, cm.comment, cm.created, t.userId, cm.id, c.id FROM comment cm, content c, title t ' \
-              'WHERE cm.contentId = {} AND c.titleId = t.id AND cm.hidden = 0'.format(contentId)
+              'WHERE cm.contentId = {} AND c.titleId = t.id AND c.id = {} AND cm.hidden = 0 ' \
+              'ORDER BY cm.id DESC'.format(contentId, contentId)
         cursor.execute(sql)
         results = cursor.fetchall()
         cursor.close()
@@ -17,7 +18,7 @@ class CommentTool:
         # 新增评论
         cursor = db.cursor()
         sql = 'INSERT INTO comment (email, comment, contentId, created, hidden) VALUES ' \
-              '("{}", "{}", {}, "{}", 0)'.format(email, comment, contentId, SomeTool.current_date())
+              '("{}", \'{}\', {}, "{}", 0)'.format(email, str(comment).replace('\'', '"'), contentId, SomeTool.current_date())
         cursor.execute(sql)
         cursor.close()
         try:

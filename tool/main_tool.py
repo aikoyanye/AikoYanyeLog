@@ -68,8 +68,8 @@ class MainTool:
     @staticmethod
     def post_update(db, version, content):
         cursor = db.cursor()
-        sql = 'INSERT INTO update_list (version, content, created) VALUES ("{}", "{}", "{}")' \
-              ''.format(version, content, SomeTool.current_date())
+        sql = 'INSERT INTO update_list (version, content, created) VALUES ("{}", \'{}\', "{}")' \
+              ''.format(version, str(content).replace('\'', '"'), SomeTool.current_date())
         cursor.execute(sql)
         cursor.close()
         try:
@@ -89,7 +89,7 @@ class MainTool:
     @staticmethod
     def add_notice(db, content):
         cursor = db.cursor()
-        sql = 'INSERT INTO notice (content, created) VALUES ("{}", "{}")'.format(content, SomeTool.current_date())
+        sql = 'INSERT INTO notice (content, created) VALUES (\'{}\', "{}")'.format(str(content).replace('\'', '"'), SomeTool.current_date())
         cursor.execute(sql)
         cursor.close()
         try:
