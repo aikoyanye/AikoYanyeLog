@@ -24,15 +24,15 @@ function InitTitleTab(userId){
         data: {userId: userId, type: '1'},
         success: function(arg){
             var results = jQuery.parseJSON(arg);
-            ShowUserTitle(results['user'], userId);
-            ShowGuestTitle(results['guest'], userId);
+            ShowUserTitle(results['user'], userId, 'title_tab');
+            ShowGuestTitle(results['guest'], userId, 'title_tab');
         }
     })
 }
 
 // 将用户分类数据展示到title_tab中，可操作
-function ShowUserTitle(data, userId){
-    var div = document.getElementById('title_tab');
+function ShowUserTitle(data, userId, div_id){
+    var div = document.getElementById(div_id);
     div.innerHTML = '';
     for(var i = 0; i<data.length; i++){
         div.innerHTML = div.innerHTML + '<div class="panel panel-default">\
@@ -45,8 +45,8 @@ function ShowUserTitle(data, userId){
 }
 
 // 将用户分类数据展示到title_tab中，不可操作
-function ShowGuestTitle(data, userId){
-    var div = document.getElementById('title_tab');
+function ShowGuestTitle(data, userId, div_id){
+    var div = document.getElementById(div_id);
     for(var i = 0; i<data.length; i++){
         div.innerHTML = div.innerHTML + '<div class="panel panel-default">\
                     <div class="panel-heading" style="background-color: #FFE4E1;"><h3>\

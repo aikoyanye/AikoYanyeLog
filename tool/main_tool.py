@@ -85,3 +85,25 @@ class MainTool:
             os.remove('static/bg.png')
         with open('static/bg.png', 'wb') as bg:
             bg.write(pic)
+
+    @staticmethod
+    def add_notice(db, content):
+        cursor = db.cursor()
+        sql = 'INSERT INTO notice (content, created) VALUES ("{}", "{}")'.format(content, SomeTool.current_date())
+        cursor.execute(sql)
+        cursor.close()
+        try:
+            db.commit()
+            return True
+        except:
+            db.rollback()
+            return False
+
+    @staticmethod
+    def get_notice(db):
+        cursor = db.cursor()
+        sql = 'SELECT content FROM notice ORDER BY id DESC'
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        cursor.close()
+        return result

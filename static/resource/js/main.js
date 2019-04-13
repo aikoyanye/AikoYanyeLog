@@ -133,3 +133,34 @@ function Bg(){
         }
     })
 }
+
+// 更新公告
+function Notice(){
+    var content = document.getElementById('notice_content').value;
+    if(content == ''){
+        ShowMsgAlert('警告', '内容不能为空啊');
+        return
+    }
+    $.ajax({
+        url: "/update",
+        type: "delete",
+        data: {type: '2', content: content},
+        success: function(arg){
+            ShowSeccussAlert();
+            ShowNotice();
+        }
+    })
+}
+
+// 展示公告
+function ShowNotice(){
+    $.ajax({
+        url: "/update",
+        type: "delete",
+        data: {type: '1'},
+        success: function(arg){
+            document.getElementById('notice').innerHTML = jQuery.parseJSON(arg)[0];
+        }
+    })
+}
+

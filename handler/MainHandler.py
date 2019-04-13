@@ -57,3 +57,13 @@ class UpdateHandler(tornado.web.RequestHandler):
     async def put(self, *args, **kwargs):
         # 替换全局背景
         MainTool.bg_pic(self.request.files.get('bg')[0]['body'])
+
+    async def delete(self, *args, **kwargs):
+        if self.get_argument('type') == '1':
+            # 获取最新公告
+            self.write(json.dumps(MainTool.get_notice(self.application.db)))
+        elif self.get_argument('type') == '2':
+            # 新增公告
+            MainTool.add_notice(self.application.db, self.get_argument('content'))
+
+

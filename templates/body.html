@@ -38,6 +38,22 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="notice_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">公告</div>
+            <div class="modal-body">
+                <label for="notice_content">内容</label>
+                <textarea class="form-control" id="notice_content"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary glyphicon glyphicon-send"
+                        data-dismiss="modal" onclick="Notice()"></button>
+            </div>
+        </div>
+    </div>
+</div>
 {% end %}
 {% block login %}
 <div class="modal fade" id="login" aria-hidden="true">
@@ -325,4 +341,18 @@
         }
     }
 </script>
+{% end %}
+{% block search %}
+'<div class="panel panel-default">
+    <div class="panel-heading" style="background-color: #FFE4E1;">
+        <h3>分类</h3>
+    </div>
+</div>
+<div id="search_title"></div>
+'<div class="panel panel-default">
+    <div class="panel-heading" style="background-color: #FFE4E1;">
+        <h3>文章</h3>
+    </div>
+</div>
+<div id="search_content"></div>
 {% end %}

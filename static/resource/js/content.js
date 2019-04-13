@@ -7,6 +7,8 @@ window.onload=function (){
     editor1.create();
     // 更新首页更新列表
     InitUpdateList();
+    // 更新首页公告
+    ShowNotice();
 }
 
 // 初始化添加content tab页

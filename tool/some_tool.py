@@ -17,3 +17,36 @@ class SomeTool:
         m = hashlib.md5()
         m.update(str(emm).encode('utf-8'))
         return m.hexdigest()
+
+    @staticmethod
+    def search(db, key, userId):
+        # 返回查询结果
+        keys = str(key).split('%')
+        results = {}
+        cursor = db.cursor()
+        sql = 'SELECT t.title, t.created, u.username, t.id FROM title t, user u WHERE t.userId = {} ' \
+              'AND t.userId = u.id AND t.hidden != 2'.format(userId)
+        sql1 = 'SELECT t.title, t.created, u.username, t.id FROM title t, user u WHERE t.userId != {} AND ' \
+               't.hidden = 0 AND t.userId = u.id'.format(userId)
+        sql2 = 'SELECT c.head, c.created, c.id, t.id FROM content c, title t, user u WHERE ' \
+               'c.titleId = t.id AND t.userId = u.id AND u.id = {} AND c.hidden != 2'.format(userId)
+        sql3 = 'SELECT c.head, c.created, c.id, t.id FROM content c, title t, user u WHERE ' \
+               'c.titleId = t.id AND t.userId = u.id AND u.id != {} AND c.hidden = 0'.format(userId)
+        for key in keys:
+            sql = sql + ' AND t.title like "%{}%"'.format(key)
+            sql1 = sql1 + ' AND t.title like "%{}%"'.format(key)
+            sql2 = sql2 + ' AND c.head like "%{}%"'.format(key)
+            sql3 = sql3 + ' AND c.head like "%{}%"'.format(key)
+        sql = sql + ' ORDER BY t.id DESC'
+        sql1 = sql1 + ' ORDER BY t.id DESC'
+        sql2 = sql2 + ' ORDER BY t.id DESC'
+        sql3 = sql3 + ' ORDER BY t.id DESC'
+        cursor.execute(sql)
+        results['user'] = cursor.fetchall()
+        cursor.execute(sql1)
+        results['guest'] = cursor.fetchall()
+        cursor.execute(sql2)
+        results['ucontent'] = cursor.fetchall()
+        cursor.execute(sql3)
+        results['gcontent'] = cursor.fetchall()
+        return results

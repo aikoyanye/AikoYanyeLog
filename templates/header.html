@@ -16,6 +16,7 @@
     <script src="static\resource\js\content.js"></script>
     <script src="static\resource\js\comment.js"></script>
     <script src="static\resource\js\pan.js"></script>
+    <script src="static\resource\js\search.js"></script>
     <title>魔法森林的雾雨万事屋</title>
 </head>
 <body style="background-image: url('/static/bg.png');background-size: cover;">
@@ -41,11 +42,13 @@
                         <span class="glyphicon glyphicon-cloud"></span>云盘</a></li>
                     {% end %}
                 </ul>
-                <form class="navbar-form navbar-left" id="form">
+                <form class="navbar-form navbar-left">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" placeholder="关键字用%隔开" id="search_key">
                     </div>
-                    <button type="submit" class="btn btn-default">Search</button>
+                    <a href="#search_tab" role="tab" data-toggle="tab" onclick="Search({{ userId }})">
+                        <button  type="button" class="btn btn-default glyphicon glyphicon-search"></button>
+                    </a>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current %}
@@ -60,6 +63,7 @@
                             {% if type == "admin" %}
                             <li><a href="#" data-toggle="modal" data-target="#update_modal">更新事件</a></li>
                             <li><a href="#" data-toggle="modal" data-target="#bg_modal">更换背景图</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#notice_modal">更换公告</a></li>
                             {% end %}
                         </ul>
                     </li>
@@ -79,24 +83,22 @@
     </div>
     <div id="myTabContent" class="tab-content" style="margin-top:10px;">
         <div class="tab-pane fade in active" id="main">
-            {% if current %}
-            <div id="jumbotron" class="jumbotron jumbotron-fluid" style="margin-top: 30px;background-color: #FFF5EE;">
-                <div class="container">
-                    <h1 class="display-4">你好啊，{{ user[1] }}</h1>
-                    <p class="lead">现在你不仅能随便看看，还能随便写写</p>
-                </div>
-            </div>
-            {% else %}
             <div class="jumbotron jumbotron-fluid" style="margin-top: 30px;background-color: #FFF5EE;">
                 <div class="container">
+                    {% if current %}
+                    <h1 class="display-4">你好啊，{{ user[1] }}</h1>
+                    <p class="lead">现在你不仅能随便看看，还能随便写写</p>
+                    {% else %}
                     <h1 class="display-4">你还没登录啊</h1>
                     <p class="lead">所以你只能随便看看</p>
+                    {% end %}
+                    <p class="lead" id="notice"></p>
                 </div>
             </div>
-            {% end %}
             {% block update_list %}{% end %}
         </div>
         <div class="tab-pane fade" id="title_tab"></div>
+        <div class="tab-pane fade" id="search_tab">{% block search %}{% end %}</div>
         {% if current %}<div class="tab-pane fade" id="add_content_tab">{% block add_content %}{% end %}</div>{% end %}
         <div class="tab-pane fade" id="content_list_tab"></div>
         <div class="tab-pane fade" id="content">{% block content %}{% end %}</div>

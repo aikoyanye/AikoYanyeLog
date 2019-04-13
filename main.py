@@ -4,6 +4,7 @@ from handler.TitleHandler import TitleHandler
 from handler.ContentHandler import ContentHandler
 from handler.CommentHandler import CommentHandler
 from handler.PanHandler import PanHandler
+from handler.SearchHandler import SearchHandler
 
 class Application(tornado.web.Application):
     def __init__(self, db):
@@ -15,6 +16,7 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/comment', CommentHandler, name='comment'),
             tornado.web.url(r'/pan', PanHandler, name='pan'),
             tornado.web.url(r'/update', UpdateHandler, name='update'),
+            tornado.web.url(r'/search', SearchHandler, name='search'),
         ]
         settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), 'templates'),
