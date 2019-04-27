@@ -50,3 +50,17 @@ class SomeTool:
         cursor.execute(sql3)
         results['gcontent'] = cursor.fetchall()
         return results
+
+    @staticmethod
+    def add_ip(db, ip):
+        # 添加ban ip
+        cursor = db.cursor()
+        sql = 'INSERT INTO ban_ip (ip) VALUES ("{}")'.format(ip)
+        cursor.execute(sql)
+        cursor.close()
+        try:
+            db.commit()
+            return True
+        except:
+            db.rollback()
+            return False

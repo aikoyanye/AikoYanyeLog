@@ -35,3 +35,20 @@ function ShowSearchUContentList(data, data1, userId){
         <div class="panel-body" style="background-color: #FFF5EE;">最后编辑时间：'+data1[i][1]+'</div></div>';
     }
 }
+
+// 添加ban ip
+function AddBanIp(){
+    var ip = document.getElementById('ip').value;
+    if(ip == ''){
+        ShowMsgAlert('警告', '内容不为空');
+        return
+    }
+    $.ajax({
+        url: "/search",
+        type: "post",
+        data: {ip: ip},
+        success: function(arg){
+            ShowSeccussAlert();
+        }
+    })
+}

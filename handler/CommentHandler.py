@@ -1,7 +1,8 @@
 import tornado.web, json
 from tool.comment_tool import CommentTool
+from handler.BaseHandler import BaseHandler
 
-class CommentHandler(tornado.web.RequestHandler):
+class CommentHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         # 获取评论列表
         self.write(json.dumps(CommentTool.get_comment(self.application.db, self.get_argument('contentId'))))

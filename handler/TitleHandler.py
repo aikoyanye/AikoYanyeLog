@@ -1,7 +1,8 @@
 import tornado.web, json
+from handler.BaseHandler import BaseHandler
 from tool.title_tool import TitleTool
 
-class TitleHandler(tornado.web.RequestHandler):
+class TitleHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         if self.get_argument('type') == '1':
             # 获取title列表，根据userId获取

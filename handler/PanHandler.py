@@ -1,7 +1,8 @@
 import tornado.web, json
 from tool.pan_tool import PanTool
+from handler.BaseHandler import BaseHandler
 
-class PanHandler(tornado.web.RequestHandler):
+class PanHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         self.write(json.dumps(PanTool.folder(self.get_argument('path'))))
 

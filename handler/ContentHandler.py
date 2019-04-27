@@ -1,7 +1,8 @@
 import tornado.web, json
 from tool.content_tool import ContentTool
+from handler.BaseHandler import BaseHandler
 
-class ContentHandler(tornado.web.RequestHandler):
+class ContentHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         if self.get_argument('type') == '1':
             # 获取content list

@@ -1,7 +1,8 @@
 import tornado.web, json, os
 from tool.main_tool import MainTool
+from handler.BaseHandler import BaseHandler
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         # 如果cookie有用户数据，免登录
         result = MainTool.user_by(self.application.db, self.get_cookie('id', '0'))
@@ -47,7 +48,7 @@ class MainHandler(tornado.web.RequestHandler):
                 self.write(json.dumps(['1']))
 
 
-class UpdateHandler(tornado.web.RequestHandler):
+class UpdateHandler(BaseHandler):
     async def get(self, *args, **kwargs):
         self.write(json.dumps(MainTool.update_list(self.application.db)))
 
@@ -65,5 +66,3 @@ class UpdateHandler(tornado.web.RequestHandler):
         elif self.get_argument('type') == '2':
             # 新增公告
             MainTool.add_notice(self.application.db, self.get_argument('content'))
-
-
